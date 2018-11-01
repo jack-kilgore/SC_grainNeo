@@ -137,15 +137,26 @@ SynthDef(\percSin,{|out,amp=0.1, freq=440, sustain=0.01, pan|
 ~foggy_morning = Buffer.read(s,"C:/Users/Jackalaka/Desktop/misc samples/10_27_18 a foggy, quiet, morning/short brd chirp NO background noise.wav");
 
 
+MIDIIn.disconnectAll;
 (
 MIDIIn.connectAll;
+
+//Default Volume Levels
 ~zero_levels = -60;
 ~gen_levels = -60;
 ~one_levels = -60;
 ~two_levels = -60;
 ~three_levels = -60;
 ~four_levels = -60;
+~five_levels = -60;
+~six_levels = -60;
+~seven_levels = -60;
+~eight_levels = -60;
+~nine_levels = -60;
 
+//Mapping Volume Levels To Vertical Sliders
+
+//1st bank
 
 MIDIFunc.cc({ |ccval, cn,chan,src|
 	~gen_levels = (ccval.linlin(0,127,0.001,1).ampdb);
@@ -160,22 +171,63 @@ MIDIFunc.cc({ |ccval, cn,chan,src|
 	["~one_levels"+(ccval.linlin(0,127,0.001,4)).ampdb].postln;
 },2);
 MIDIFunc.cc({ |ccval, cn,chan,src|
-	~two_levels = (ccval.linexp(0,127,0.01,6)).ampdb;
-	["~two_levels"+(ccval.linexp(0,127,0.01,6)).ampdb].postln;
+	~two_levels = (ccval.linexp(0,127,0.01,4)).ampdb;
+	["~two_levels"+(ccval.linexp(0,127,0.01,4)).ampdb].postln;
 },3);
 
+//2nd bank
 
+MIDIFunc.cc({ |ccval, cn,chan,src|
+	~three_levels = (ccval.linlin(0,127,0.001,4).ampdb);
+	["~three_levels"+(ccval.linlin(0,127,0.001,4)).ampdb].postln;
+},4);
+MIDIFunc.cc({ |ccval, cn,chan,src|
+	~four_levels = (ccval.linlin(0,127,0.001,3)).ampdb;
+	["~four_levels"+(ccval.linlin(0,127,0.001,3)).ampdb].postln;
+},5);
+MIDIFunc.cc({ |ccval, cn,chan,src|
+	~five_levels = (ccval.linlin(0,127,0.001,4)).ampdb;
+	["~five_levels"+(ccval.linlin(0,127,0.001,4)).ampdb].postln;
+},6);
+MIDIFunc.cc({ |ccval, cn,chan,src|
+	~six_levels = (ccval.linexp(0,127,0.01,4)).ampdb;
+	["~six_levels"+(ccval.linexp(0,127,0.01,4)).ampdb].postln;
+},7);
+
+///---------Default PAD Values
+~random_gen = 1.4;
 ~random_zero = 3.4;
 ~random_one = 1.4;
 ~random_two = 1.1;
 ~random_three = 1.4;
+~random_four = 1.4;
+~random_five = 1.4;
+~random_six = 1.4;
+
+~pitch_gen = 0.2;
+~pitch_pattern_gen = 18;
 ~pitch_zero = 0.2;
 ~pitch_pattern_zero = 18;
 ~pitch_one = 1.4;
 ~pitch_pattern_one = 14;
 ~pitch_two = 0.4;
 ~pitch_pattern_two = 12;
+~pitch_three = 0.4;
+~pitch_pattern_three = 12;
+~pitch_four = 0.4;
+~pitch_pattern_four = 12;
+~pitch_five = 0.4;
+~pitch_pattern_five = 12;
+~pitch_six = 0.4;
+~pitch_pattern_six = 12;
 
+/////PAD MAPPING
+
+// first row of pads x-axis
+MIDIFunc.cc({ |ccval, cn,chan,src|
+	~random_gen = ccval.linlin(0,127,1,10);
+	["random_gen"+ccval.linlin(0,127,1,10)].postln;
+},16);
 MIDIFunc.cc({ |ccval, cn,chan,src|
 	~random_zero = ccval.linlin(0,127,1,10);
 	["random_zero"+ccval.linlin(0,127,1,10)].postln;
@@ -189,7 +241,33 @@ MIDIFunc.cc({ |ccval, cn,chan,src|
 	["random_two"+ccval.linlin(0,127,1,10)].postln;
 },22);
 
+//third row of pads x-axis
+MIDIFunc.cc({ |ccval, cn,chan,src|
+	~random_three = ccval.linlin(0,127,1,10);
+	["random_three"+ccval.linlin(0,127,1,10)].postln;
+},32);
+MIDIFunc.cc({ |ccval, cn,chan,src|
+	~random_four = ccval.linexp(0,127,1,10);
+	["random_four"+ccval.linexp(0,127,1,10)].postln;
+},34);
+MIDIFunc.cc({ |ccval, cn,chan,src|
+	~random_five = ccval.linlin(0,127,1,10);
+	["random_five"+ccval.linlin(0,127,1,10)].postln;
+},36);
+MIDIFunc.cc({ |ccval, cn,chan,src|
+	~random_six = ccval.linlin(0,127,1,10);
+	["random_six"+ccval.linlin(0,127,1,10)].postln;
+},38);
 
+//2nd row of pads xy axis
+MIDIFunc.cc({ |ccval, cn,chan,src|
+	~pitch_gen = ccval.linlin(0,127,-4,4);
+	["pitch_gen"+ccval.linlin(0,127,-4,4)].postln;
+},24);
+MIDIFunc.cc({ |ccval, cn,chan,src|
+	~pitch_pattern_gen = ccval.linlin(0,127,1,45);
+	["pitch_pattern_gen"+ccval.linexp(0,127,1,45)].postln;
+},25);
 MIDIFunc.cc({ |ccval, cn,chan,src|
 	~pitch_zero = ccval.linlin(0,127,-4,4);
 	["pitch_zero"+ccval.linlin(0,127,-4,4)].postln;
@@ -214,6 +292,41 @@ MIDIFunc.cc({ |ccval, cn,chan,src|
 	~pitch_pattern_two = ccval.linlin(0,127,1,45);
 	["pitch_pattern_two"+ccval.linexp(0,127,1,45)].postln;
 },31);
+
+//4th row of pads xy axis
+
+MIDIFunc.cc({ |ccval, cn,chan,src|
+	~pitch_three = ccval.linlin(0,127,-4,4);
+	["pitch_three"+ccval.linlin(0,127,-4,4)].postln;
+},40);
+MIDIFunc.cc({ |ccval, cn,chan,src|
+	~pitch_pattern_three = ccval.linlin(0,127,1,45);
+	["pitch_pattern_three"+ccval.linexp(0,127,1,45)].postln;
+},41);
+MIDIFunc.cc({ |ccval, cn,chan,src|
+	~pitch_four = ccval.linlin(0,127,-4,4);
+	["pitch_four"+ccval.linlin(0,127,-4,4)].postln;
+},42);
+MIDIFunc.cc({ |ccval, cn,chan,src|
+	~pitch_pattern_four = ccval.linlin(0,127,1,45);
+	["pitch_pattern_four"+ccval.linexp(0,127,1,45)].postln;
+},43);
+MIDIFunc.cc({ |ccval, cn,chan,src|
+	~pitch_five = ccval.linlin(0,127,-4,4);
+	["pitch_five"+ccval.linlin(0,127,-4,4)].postln;
+},44);
+MIDIFunc.cc({ |ccval, cn,chan,src|
+	~pitch_pattern_five = ccval.linlin(0,127,1,45);
+	["pitch_pattern_five"+ccval.linexp(0,127,1,45)].postln;
+},45);
+MIDIFunc.cc({ |ccval, cn,chan,src|
+	~pitch_six = ccval.linlin(0,127,-4,4);
+	["pitch_six"+ccval.linlin(0,127,-4,4)].postln;
+},46);
+MIDIFunc.cc({ |ccval, cn,chan,src|
+	~pitch_pattern_six = ccval.linlin(0,127,1,45);
+	["pitch_pattern_six"+ccval.linexp(0,127,1,45)].postln;
+},47);
 
 );
 
@@ -336,6 +449,63 @@ s.reboot;
 ).play;
 )
 ~two.stop
+
+//---------stubs
+(
+~three = Pbindef(\3,
+	\instrument,\expodec1,
+	\sustain,Pn(Pgeom(0.001,1.2,35),inf),
+	\dur,Pn(Pgeom(0.001,1.2,10),inf),
+	\bufnum, ~magnets[4],
+	\trigs, 0.001,
+	\amp, Pfunc{~three_levels.dbamp},
+	\rate, Pn(Pgeom(Pfunc{~pitch_three}.iter,1.1,Pfunc{~pitch_pattern_three}.iter),inf),
+	\samp_rand_rate, 1.1,
+	\samp_rand_range, Pfunc{~random_three},
+).play;
+)
+
+(
+~four = Pbindef(\4,
+	\instrument,\rexpodec1,
+	\sustain,Pn(Pgeom(0.001,1.2,35),inf),
+	\dur,Pn(Pgeom(0.001,1.2,10),inf),
+	\bufnum, ~magnets[5],
+	\trigs, 0.001,
+	\amp, Pfunc{~four_levels.dbamp},
+	\rate, Pn(Pgeom(Pfunc{~pitch_four}.iter,1.1,Pfunc{~pitch_pattern_four}.iter),inf),
+	\samp_rand_rate, 1.1,
+	\samp_rand_range, Pfunc{~random_four},
+).play;
+)
+
+(
+~five = Pbindef(\5,
+	\instrument,\rexpodec1,
+	\sustain,Pn(Pgeom(0.001,1.2,35),inf),
+	\dur,Pn(Pgeom(0.001,1.2,10),inf),
+	\bufnum, ~magnets[5],
+	\trigs, 0.001,
+	\amp, Pfunc{~five_levels.dbamp},
+	\rate, Pn(Pgeom(Pfunc{~pitch_five}.iter,1.1,Pfunc{~pitch_pattern_five}.iter),inf),
+	\samp_rand_rate, 1.1,
+	\samp_rand_range, Pfunc{~random_five},
+).play;
+)
+
+(
+~six = Pbindef(\6,
+	\instrument,\rexpodec1,
+	\sustain,Pn(Pgeom(0.001,1.2,35),inf),
+	\dur,Pn(Pgeom(0.001,1.2,10),inf),
+	\bufnum, ~magnets[5],
+	\trigs, 0.001,
+	\amp, Pfunc{~six_levels.dbamp},
+	\rate, Pn(Pgeom(Pfunc{~pitch_six}.iter,1.1,Pfunc{~pitch_pattern_six}.iter),inf),
+	\samp_rand_rate, 1.1,
+	\samp_rand_range, Pfunc{~random_six},
+).play;
+)
 
 //------------------part2
 d = Buffer.read(s,"C:/Users/Jackalaka/Desktop/misc samples/10_9_18/beautiful_birds_clean.wav" );
