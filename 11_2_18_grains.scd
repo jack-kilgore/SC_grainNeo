@@ -1,3 +1,4 @@
+
 (
 
 ( //a gabor(approx. gaussian-shaped) grain
@@ -133,7 +134,6 @@ SynthDef(\percSin,{|out,amp=0.1, freq=440, sustain=0.01, pan|
 ~foggy_morning = Buffer.read(s,"C:/Users/Jackalaka/Desktop/misc samples/10_27_18 a foggy, quiet, morning/short brd chirp NO background noise.wav");
 
 
-
 (
 MIDIIn.connectAll;
 
@@ -153,6 +153,7 @@ MIDIIn.connectAll;
 //Mapping Volume Levels To Vertical Sliders
 
 //1st bank
+//(0..127).collect(_.lincurve(0,127,0.001,4,-2)).plot;
 
 MIDIFunc.cc({ |ccval, cn,chan,src|
 	~gen_levels = (ccval.linlin(0,127,0.001,1).ampdb);
@@ -163,31 +164,31 @@ MIDIFunc.cc({ |ccval, cn,chan,src|
 	["~zero_levels"+(ccval.linexp(0,127,0.001,3)).ampdb].postln;
 },1);
 MIDIFunc.cc({ |ccval, cn,chan,src|
-	~one_levels = (ccval.linexp(0,127,0.001,4)).ampdb;
-	["~one_levels"+(ccval.linexp(0,127,0.001,4)).ampdb].postln;
+	~one_levels = (ccval.lincurve(0,127,0.001,4,-2)).ampdb;
+	["~one_levels"+(ccval.lincurve(0,127,0.001,4,-2)).ampdb].postln;
 },2);
 MIDIFunc.cc({ |ccval, cn,chan,src|
-	~two_levels = (ccval.linexp(0,127,0.01,4)).ampdb;
-	["~two_levels"+(ccval.linexp(0,127,0.01,4)).ampdb].postln;
+	~two_levels = (ccval.lincurve(0,127,0.01,4,-2)).ampdb;
+	["~two_levels"+(ccval.lincurve(0,127,0.01,4,-2)).ampdb].postln;
 },3);
 
 //2nd bank
 
 MIDIFunc.cc({ |ccval, cn,chan,src|
-	~three_levels = (ccval.linexp(0,127,0.001,4).ampdb);
-	["~three_levels"+(ccval.linexp(0,127,0.001,4)).ampdb].postln;
+	~three_levels = (ccval.lincurve(0,127,0.001,4,-2).ampdb);
+	["~three_levels"+(ccval.lincurve(0,127,0.001,4,-2)).ampdb].postln;
 },4);
 MIDIFunc.cc({ |ccval, cn,chan,src|
-	~four_levels = (ccval.linexp(0,127,0.001,3)).ampdb;
-	["~four_levels"+(ccval.linexp(0,127,0.001,3)).ampdb].postln;
+	~four_levels = (ccval.lincurve(0,127,0.001,3,-2)).ampdb;
+	["~four_levels"+(ccval.lincurve(0,127,0.001,3,-2)).ampdb].postln;
 },5);
 MIDIFunc.cc({ |ccval, cn,chan,src|
-	~five_levels = (ccval.linexp(0,127,0.001,4)).ampdb;
-	["~five_levels"+(ccval.linexp(0,127,0.001,4)).ampdb].postln;
+	~five_levels = (ccval.lincurve(0,127,0.001,4,-2)).ampdb;
+	["~five_levels"+(ccval.lincurve(0,127,0.001,4,-2)).ampdb].postln;
 },6);
 MIDIFunc.cc({ |ccval, cn,chan,src|
-	~six_levels = (ccval.linexp(0,127,0.01,4)).ampdb;
-	["~six_levels"+(ccval.linexp(0,127,0.01,4)).ampdb].postln;
+	~six_levels = (ccval.lincurve(0,127,0.01,4,-2)).ampdb;
+	["~six_levels"+(ccval.lincurve(0,127,0.01,4,-2)).ampdb].postln;
 },7);
 
 ///---------Default PAD Values
@@ -207,7 +208,7 @@ MIDIFunc.cc({ |ccval, cn,chan,src|
 ~pitch_one = 1.4;
 ~pitch_pattern_one = 14;
 ~sustain_two = 0.0045;
-~dur_two = 12;
+~dur_two = 1;
 ~pitch_three = 0.4;
 ~pitch_pattern_three = 12;
 ~pitch_four = 0.4;
@@ -293,8 +294,8 @@ MIDIFunc.cc({ |ccval, cn,chan,src|
 //4th row of pads xy axis
 
 MIDIFunc.cc({ |ccval, cn,chan,src|
-	~pitch_three = ccval.linlin(0,127,-4,4);
-	["pitch_three"+ccval.linlin(0,127,-4,4)].postln;
+	~pitch_three = ccval.lincurve(0,127,-4,4,-2);
+	["pitch_three"+ccval.lincurve(0,127,-4,4,-2)].postln;
 },40);
 MIDIFunc.cc({ |ccval, cn,chan,src|
 	~pitch_pattern_three = ccval.linlin(0,127,1,45);
@@ -425,11 +426,12 @@ s.reboot;
 	\samp_rand_range, Pfunc{~random_one},
 ).play;
 )
+
 ~one.stop;
 
 
 
-///////////dusk[8] rhythms
+///////////dusk[8] rhythms--note, sample needs to "warm up" for some reason
 ~sustain_two = 0.0045;
 (
 ~two = Pbindef(\two,
