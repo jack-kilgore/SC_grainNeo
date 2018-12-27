@@ -131,7 +131,7 @@ SynthDef(\percSin,{|out,amp=0.1, freq=440, sustain=0.01, pan|
 },\ir!5).add;
 )
 )
-~foggy_morning = Buffer.read(s,"C:/Users/Jackalaka/Desktop/misc samples/10_27_18 a foggy, quiet, morning/short brd chirp NO background noise.wav");
+~foggy_morning = Buffer.read(s,"/Users/jkilgore/Music/misc-samples/10_27_18 a foggy, quiet, morning/short brd chirp NO background noise.wav");
 
 
 (
@@ -341,13 +341,14 @@ s.reboot;
 
 (
 ~dusk= Array.new;
-~folder6 = PathName.new("C:/Users/Jackalaka/Desktop/misc samples/9_8_18dusk_walk/scdir");
+~folder6 = PathName.new("/Users/jkilgore/Music/misc-samples/9_8_18dusk_walk/scdir/");
 (
 ~folder6.entries.do({
 	arg path;
 	~dusk = ~dusk.add(Buffer.read(s,path.fullPath));
 })
-))
+));
+
 
 (
 ~zero = Pbindef(\0,
@@ -405,13 +406,13 @@ s.reboot;
 ///////////// BowlSpoon Glass Panner
 (
 ~bowlspoon = Array.new;
-~folder9 = PathName.new("C:/Users/Jackalaka/Desktop/misc samples/bowl and spoon");
+~folder9 = PathName.new("/Users/jkilgore/Music/misc-samples/bowl and spoon/");
 (
 ~folder9.entries.do({
 	arg path;
 	~bowlspoon = ~bowlspoon.add(Buffer.read(s,path.fullPath));
 })
-))
+));
 
 (
  ~one = Pbindef(\1,
@@ -456,13 +457,14 @@ s.reboot;
 
 
 //------------Part2-----------mag [5]
+
 (
-~magnets= Array.new;
-~mag = PathName.new("C:/Users/Jackalaka/Desktop/misc samples/10_28_18-magents");
+~mag= Array.new;
+~folder61 = PathName.new("/Users/jkilgore/Music/misc-samples/10_28_18-magents/");
 (
-~mag.entries.do({
+~folder61.entries.do({
 	arg path;
-	~magnets = ~magnets.add(Buffer.read(s,path.fullPath));
+	~mag = ~mag.add(Buffer.read(s,path.fullPath));
 })
 ))
 
@@ -474,7 +476,7 @@ s.reboot;
 	\instrument,\rexpodec1,
 	\sustain,Pn(Pgeom(0.001,1.2,35),inf),
 	\dur,Pn(Pgeom(0.001,1.2,10),inf),
-	\bufnum, ~magnets[5],
+	\bufnum, ~mag[5],
 	\trigs, 0.001,
 	\amp, Pfunc{~three_levels.dbamp},
 	\rate, Pn(Pgeom(Pfunc{~pitch_three}.iter,1.1,Pfunc{~pitch_pattern_three}.iter),inf),
@@ -486,9 +488,8 @@ s.reboot;
 
 
 
-
 //------------------part3
-d = Buffer.read(s,"C:/Users/Jackalaka/Desktop/misc samples/10_9_18/beautiful_birds_clean.wav" );
+d = Buffer.read(s,"/Users/jkilgore/Music/misc-samples/10_9_18/beautiful_birds_clean.wav");
 
 //default
 (
@@ -576,8 +577,7 @@ Pbindef(\yes,
 	\samp_rand_range, Pfunc{~random_five},
 ).play;
 )
-
-~now = Buffer.read(s,"C:/Users/Jackalaka/Desktop/misc samples/10_20-a_weekend_with_marisa/key_shoe_concert.wav");
+~now = Buffer.read(s,"/Users/jkilgore/Music/misc-samples/10_20-a_weekend_with_marisa/key_shoe_concert.wav");
 (
 ~six = Pbindef(\6,
 	\instrument,\rexpodec1,
